@@ -8,6 +8,19 @@
       owner: www-data
       group: www-data
 
+  - name: enable Redis
+    service:
+      name: redis
+      state: started
+      enabled: yes
+
+  - name: enable memcached
+    service:
+      name: memcached
+      state: started
+      enabled: yes
+
+ 
   - name: fix file permissions
     shell:
       chdir: "/var/www/{{ fullDomain }}"
