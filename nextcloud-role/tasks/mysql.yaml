@@ -1,0 +1,51 @@
+---
+
+  - name: start Mariadb
+    when: (ansible_distribution == "EL" or ansible_distribution == "CentOS")
+    service:
+      name: mariadb
+      state: started
+      enabled: yes
+
+  - name: start MySQL
+    when: (ansible_distribution == "Ubuntu" or ansible_distribution == "Debian")
+    service:
+      name: mysql
+      state: started
+      enabled: yes
+
+  - name: Make sure a database with the same name doesn't already exist.
+    community.mysql.mysql_info:
+      check_implicit_admin: true
+      login_user: "{{ mysqluser }}"
+      login_password: "{{ mysqlpassword }}"
+      filter:
+      - databases
+      return_empty_dbs: yes
+    register: dbList
+
+  - name: fail if database with same name already exists
+    fail:
+      msg: "Database with this name already exists! will overwrite and cause problems with whatever is in the database. Change domainShort to something else to resolve"
+    when: item in dbList.databases
+    with_items:
+      - "{{ domainShort }}"
+
+  - name: Create a new database if a database by the same name doesn't already exist
+    mysql_db:
+      name: "{{ domainShort }}"
+      check_implicit_admin: true
+      login_user: "{{ mysqluser }}"
+      login_password: "{{ mysqlpassword }}"
+      state: present
+
+
+  - name: Create a new user
+    mysql_user:
+      check_implicit_admin: true
+      name: "{{ domainShort }}"
+      password: "{{ db_password }}"
+      login_user: "{{ mysqluser }}"
+      login_password: "{{ mysqlpassword }}"
+      priv: '*.*:All'
+      state: present

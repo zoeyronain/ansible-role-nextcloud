@@ -1,0 +1,53 @@
+---
+
+  - name: install packages
+    when: (ansible_distribution == "Debian" or ansible_distribution == "Ubuntu")
+    apt:
+      name:
+        - 'nginx'
+        - 'ffmpeg'
+        - 'memcached'
+        - 'redis'
+        - 'libmemcached-tools'
+        - 'php8.2'
+        - 'php8.2-common'
+        - 'php8.2-curl'
+        - 'php8.2-mysql'
+        - 'php8.2-fpm'
+        - 'php8.2-cli'
+        - 'php8.2-gd'
+        - 'php8.2-imagick'
+        - 'php8.2-intl'
+        - 'php8.2-exif'
+        - 'php8.2-json'
+        - 'php8.2-mbstring'
+        - 'php8.2-readline'
+        - 'php8.2-redis'
+        - 'php8.2-xml'
+        - 'php8.2-zip'
+        - 'php8.2-bz2'
+        - 'python3-pip'
+        - 'mysql-server'
+        - 'mysql-client'
+        - 'libmysqlclient-dev'
+        - 'python3-mysqldb'
+        - 'unzip'
+        - 'ufw'
+
+      state: present
+
+    register: task_result
+    until: task_result is success 
+    retries: 10
+    delay: 2
+
+
+  - name: install certbot
+    when: (leEmail is defined and ansible_distribution == "Debian" or ansible_distribution == "Ubuntu")
+    apt:
+      name: certbot
+      state: present
+    register: task_result
+    until: task_result is success
+    retries: 10
+    delay: 2

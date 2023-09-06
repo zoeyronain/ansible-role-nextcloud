@@ -1,0 +1,19 @@
+---
+  - name: extract Nextcloud
+    unarchive:
+      src: https://download.nextcloud.com/server/releases/latest.zip
+      dest: "/var/www/{{ fullDomain }}"
+      remote_src: yes
+      extra_opts: [--strip-components=1]
+      owner: www-data
+      group: www-data
+
+  - name: fix file permissions
+    shell:
+      chdir: "/var/www/{{ fullDomain }}"
+      cmd: find . -type f -exec chmod 644 {} +
+
+  - name: fix folder permissions
+    shell:
+      chdir: "/var/www/{{ fullDomain }}"
+      cmd: find . -type d -exec chmod 755 {} +

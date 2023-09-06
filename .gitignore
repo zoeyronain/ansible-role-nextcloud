@@ -1,0 +1,5 @@
+passwordfile
+playbook.retry
+all.yml
+.DS_Store
+variables.yaml
