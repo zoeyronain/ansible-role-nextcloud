@@ -47,16 +47,10 @@
       path: "/etc/nginx/snippets"
       state: directory
 
-  - name: install NGINX config for HTTP only site
-    when: (leEmail is not defined)
-    template:
-      src: nginxHTTPconfig.conf.j2
-      dest: "/etc/nginx/conf.d/{{ fullDomain }}.conf"
-
   - name: install NGINX config for HTTPS site
     when: (leEmail is defined)
     template:
-      src: nginxHTTPSconfig.conf.j2
+      src: nginxConfigHTTPS.conf.j2
       dest: "/etc/nginx/conf.d/{{ fullDomain }}.conf"
 
   - name: install NGINX config
