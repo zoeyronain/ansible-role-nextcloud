@@ -1,11 +1,11 @@
 ---
 
-# tasks file for role-betterpress
+# tasks file for role-nextcloud
 
   - import_tasks: aptConfig.yaml
   - import_tasks: aptInstall.yaml
-  - import_tasks: yumConfig.yaml
-  - import_tasks: yumInstall.yaml
+  - import_tasks: yumconfig.yaml
+  - import_tasks: yuminstall.yaml
   - import_tasks: cloudflare.yaml
   - import_tasks: firewall.yaml
   - import_tasks: mysql.yaml
